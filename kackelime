@@ -1,0 +1,27 @@
+import re
+from collections import Counter
+
+def kelime_frekansi(metin):
+    temiz_metin = re.sub(r'[^\w\s]', '', metin.lower())
+    kelimeler = temiz_metin.split()
+    frekanslar = Counter(kelimeler)
+    return frekanslar
+
+def en_sik_kelimeleri_listele(frekanslar, n=10):
+    en_sik_kelimeler = frekanslar.most_common(n)
+    print(f"En sık {n} kelime:")
+    for kelime, frekans in en_sik_kelimeler:
+        print(f"{kelime}: {frekans} kere")
+
+if __name__ == "__main__":
+    dosya_adı = input("Analiz edilecek metin dosyasının adını girin: ")
+
+    try:
+        with open(dosya_adı, 'r', encoding='utf-8') as dosya:
+            metin = dosya.read()
+            frekanslar = kelime_frekansi(metin)
+            en_sik_kelimeleri_listele(frekanslar)
+    except FileNotFoundError:
+        print(f"{dosya_adı} adlı dosya bulunamadı.")
+    except Exception as e:
+        print(f"Bir hata oluştu: {e}")
